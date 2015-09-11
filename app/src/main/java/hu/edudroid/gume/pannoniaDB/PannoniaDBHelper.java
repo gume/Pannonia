@@ -82,6 +82,23 @@ public class PannoniaDBHelper extends SQLiteOpenHelper {
         return aad;
     }
 
+    public List<String> getCourseList() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> l = new ArrayList<String>();
+
+        Cursor c = db.query(true, "courses", new String[] {"course" }, null, null, null, null, "course", null);
+        if (c != null) {
+            while (c.moveToNext()) {
+                String course = c.getString(0);
+                l.add(course);
+            }
+            c.close();
+        }
+        db.close();
+        return l;
+    }
+
     public void setCourse(String name, int day, int hour, String course) {
 
         SQLiteDatabase db = getWritableDatabase();

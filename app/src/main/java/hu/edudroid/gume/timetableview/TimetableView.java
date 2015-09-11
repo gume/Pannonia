@@ -25,6 +25,7 @@ import android.view.View.OnLongClickListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TimetableView extends TableLayout implements OnLongClickListener, LessonPickerListener {
 
@@ -45,6 +46,8 @@ public class TimetableView extends TableLayout implements OnLongClickListener, L
     private CourseChangeListener mccListener = null;
 
     public static String days[] = { "Hétfõ", "Kedd", "Szerda", "Csütörtök", "Péntek" };
+
+    protected ArrayList<String> courseList = new ArrayList<String>();
 
     private boolean oneday = false;
     private int today = -1;
@@ -143,6 +146,12 @@ public class TimetableView extends TableLayout implements OnLongClickListener, L
         }
     }
 
+    public void setCourseList(List<String> cl) {
+        courseList.clear();
+        courseList.addAll(cl);
+    }
+
+
     public void setTextSize(int i) {
         textSizeI = i;
     }
@@ -162,9 +171,7 @@ public class TimetableView extends TableLayout implements OnLongClickListener, L
         LessonPicker df = new LessonPicker();
         FragmentActivity a = (FragmentActivity) context;
         df.setListener(this);
-        ArrayList<String> c = new ArrayList<String>(
-                Arrays.asList( "Magyar", "Matek", "Ének", "Tesi", "Köri", "Nyelvtan", "Olvasás", "Rajz", "Technika", "Angol", "Erkölcstan", "Úszás", "Foci", "Szolfézs", "Dob" ));
-        df.setChoices(c);
+        df.setChoices(courseList);
         df.show(a.getSupportFragmentManager(), "Tárgyválasztás");
 
         return true;
@@ -184,7 +191,9 @@ public class TimetableView extends TableLayout implements OnLongClickListener, L
         if (mccListener != null) mccListener.onCourseChange(editCell.day, editCell.hour + 8, lp.getSelection());
 
         setCourses(courses);
-
+        if (!courseList.contains(lp.getSelection())) {
+            courseList.add(lp.getSelection());
+        }
     }
 
     public void setCourseChangeListener(CourseChangeListener ccl) {

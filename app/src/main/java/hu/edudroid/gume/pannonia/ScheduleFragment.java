@@ -111,22 +111,27 @@ public class ScheduleFragment extends Fragment implements TimetableView.CourseCh
         }
         int tomorrow = (today + 1) % 5;
 
+        ArrayList<String> courseList = (ArrayList<String>) pDB.getCourseList();
+
         ttv[0] = (TimetableView) rootView.findViewById(R.id.sch_table_mai);
         ttv[0].setOneDay(true);
         ttv[0].setToday(today);
         ttv[0].setCourses(heti);
+        ttv[0].setCourseList(courseList);
         ttv[0].setCourseChangeListener(this);
 
         ttv[1] = (TimetableView) rootView.findViewById(R.id.sch_table_holnapi);
         ttv[1].setOneDay(true);
         ttv[1].setToday(tomorrow);
         ttv[1].setCourses(heti);
+        ttv[1].setCourseList(courseList);
         ttv[1].setCourseChangeListener(this);
 
         ttv[2] = (TimetableView) rootView.findViewById(R.id.sch_table_heti);
         ttv[2].setOneDay(false);
         ttv[2].setToday(today);
         ttv[2].setCourses(heti);
+        ttv[2].setCourseList(courseList);
         ttv[2].setCourseChangeListener(this);
 
         tabs.setCurrentTab(currentTab);
