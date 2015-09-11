@@ -1,0 +1,47 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="hu.edudroid.gume.pannonia.SettingsFragment"
+    android:rowCount="5"
+    android:columnCount="1">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/txt_settings_students"
+        android:layout_row="0"
+        android:layout_column="0" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_row="1"
+        android:layout_column="0" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_settings_newstudent"
+        android:id="@+id/button_newstudent"
+        android:layout_gravity="center_horizontal"
+        android:layout_row="2"
+        android:layout_column="0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/txt_settings_database"
+        android:id="@+id/textView"
+        android:layout_column="0"
+        android:layout_row="3" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_settings_cleardb"
+        android:id="@+id/button"
+        android:layout_column="0"
+        android:layout_row="4" />
+
+</GridLayout>

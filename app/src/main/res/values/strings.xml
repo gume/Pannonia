@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Pannonia</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_refresh">Frissítés</string>
+    <string name="action_settings">Beállítások</string>
+
+    <string name="txt_settings_students">Tanulók:</string>
+    <string name="txt_settings_newstudent">Új tanuló</string>
+    <string name="txt_settings_database">Adatbázis</string>
+    <string name="txt_settings_hint_omid">OMID</string>
+    <string name="txt_settings_hint_password">jelszó</string>
+    <string name="txt_settings_remove">Törlés</string>
+    <string name="txt_settings_setclass">Osztály beállítása</string>
+    <string name="txt_settings_class">Osztály</string>
+    <string name="txt_settings_cleardb">Adatbázis törlése</string>
+    <string name="txt_navigation_schedule">Órarend</string>
+    <string name="txt_navigation_homework">Házi feladat</string>
+    <string name="txt_navigation_grades">Ellenőrző</string>
+    <string name="txt_navigation_messages">Üzenetek</string>
+    <string name="txt_webpage_refreshlabel">Letöltve:</string>
+</resources>
