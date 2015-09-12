@@ -58,7 +58,7 @@ public class PannoniaMain extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, WebPageFragment.newInstance("SP", "", ""))
+                .replace(R.id.container, SplashFragment.newInstance())
                 .commit();
     }
 

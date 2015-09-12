@@ -87,9 +87,10 @@ public class WebPageFragment extends Fragment {
             new LoadMessagesTask(wv).execute(param1, param2);
         }
         else if (type.equals("SP")) {
-            wv.getSettings().setLoadWithOverviewMode(true);
-            wv.getSettings().setUseWideViewPort(true);
-            wv.loadUrl("file:///android_asset/pannonia_suli.jpg");
+            //wv.getSettings().setLoadWithOverviewMode(true);
+            //wv.getSettings().setUseWideViewPort(true);
+            wv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            wv.loadUrl("file:///android_asset/pannonia_suli.html");
         }
 
         wv.getSettings().setBuiltInZoomControls(true);
