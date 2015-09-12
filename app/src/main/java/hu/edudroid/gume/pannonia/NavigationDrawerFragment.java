@@ -141,7 +141,8 @@ public class NavigationDrawerFragment extends Fragment {
         le.put(TEXT3, "");
         navigationList.add(le);
 
-        mDrawerListView.setAdapter(new SimpleAdapter(getContext(), navigationList, android.R.layout.simple_list_item_2, fromMapKey, toLayoutId));
+        mDrawerListView.setAdapter(new SimpleAdapter(getContext(), navigationList,
+                android.R.layout.simple_list_item_2, fromMapKey, toLayoutId));
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

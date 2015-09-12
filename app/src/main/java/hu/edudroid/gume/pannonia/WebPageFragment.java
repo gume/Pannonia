@@ -86,6 +86,11 @@ public class WebPageFragment extends Fragment {
         else if (type.equals("MS")) {
             new LoadMessagesTask(wv).execute(param1, param2);
         }
+        else if (type.equals("SP")) {
+            wv.getSettings().setLoadWithOverviewMode(true);
+            wv.getSettings().setUseWideViewPort(true);
+            wv.loadUrl("file:///android_asset/pannonia_suli.jpg");
+        }
 
         wv.getSettings().setBuiltInZoomControls(true);
         wv.getSettings().setDisplayZoomControls(false);
