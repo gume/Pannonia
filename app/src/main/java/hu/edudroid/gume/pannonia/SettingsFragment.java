@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -25,6 +26,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.obsez.android.lib.filechooser.ChooserDialog;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,8 +142,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
                                 ab.setTitle(R.string.txt_settings_class);
                                 final Spinner spc1 = new Spinner(parent.getContext());
                                 final Spinner spc2 = new Spinner(parent.getContext());
-                                String c1[] = { "1", "2", "3", "4", "5", "6", "7", "8" };
-                                String c2[] = { "a", "b" };
+                                String c1[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+                                String c2[] = {"a", "b"};
                                 spc1.setAdapter(new ArrayAdapter<String>(parent.getContext(),
                                         android.R.layout.simple_spinner_item, c1));
                                 spc2.setAdapter(new ArrayAdapter<String>(parent.getContext(),
@@ -184,9 +188,20 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
-        Button b = (Button) v.findViewById(R.id.button_newstudent);
-        b.setOnClickListener(this);
+        Button bns = (Button) v.findViewById(R.id.button_newstudent);
+        bns.setOnClickListener(this);
+
+        Button bdbd = (Button) v.findViewById(R.id.button_deletedb);
+        bdbd.setOnClickListener(this);
+
+        Button bdbe = (Button) v.findViewById(R.id.button_exportdb);
+        bdbe.setOnClickListener(this);
+
+        Button bdbi = (Button) v.findViewById(R.id.button_importdb);
+        bdbi.setOnClickListener(this);
+
         return v;
+
     }
 
 
@@ -208,8 +223,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         mListener = null;
     }
 
-    @Override
-    public void onClick(final View v) {
+    protected void onClick_newStudent(final View v) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle(R.string.txt_settings_newstudent);
@@ -248,6 +262,46 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
         });
 
         alert.show();
+    }
+
+    public void onClick_exportDB(final View v) {
+        pDB.exportDB();
+        Toast.makeText(getActivity(), "Database exported to SD card", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClick_importDB(final View v) {
+        new ChooserDialog().with(getContext())
+                .withStartFile(Environment.getExternalStorageDirectory().getPath())
+                .withChosenListener(new ChooserDialog.Result() {
+                    @Override
+                    public void onChoosePath(String path, File pathFile) {
+                        pDB.importDB(path);
+                        Toast.makeText(getActivity(), "Database imported from " + path, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build()
+                .show();
+
+    }
+
+    public void onClick_deleteDB(final View v) {
+        pDB.deleteDB();
+    }
+
+    @Override
+    public void onClick(final View v) {
+        if (v.getId() == R.id.button_newstudent) {
+            onClick_newStudent(v);
+        }
+        else if (v.getId() == R.id.button_exportdb) {
+            onClick_exportDB(v);
+        }
+        else if (v.getId() == R.id.button_importdb) {
+            onClick_importDB(v);
+        }
+        else if (v.getId() == R.id.button_deletedb) {
+            onClick_deleteDB(v);
+        }
     }
 
     @Override

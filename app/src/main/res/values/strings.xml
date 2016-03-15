@@ -11,7 +11,7 @@
     <string name="action_refresh">Frissítés</string>
     <string name="action_settings">Beállítások</string>
 
-    <string name="txt_settings_students">Tanulók:</string>
+    <string name="txt_settings_students">Tanulók</string>
     <string name="txt_settings_newstudent">Új tanuló</string>
     <string name="txt_settings_database">Adatbázis</string>
     <string name="txt_settings_hint_omid">OMID</string>
@@ -19,7 +19,9 @@
     <string name="txt_settings_remove">Törlés</string>
     <string name="txt_settings_setclass">Osztály beállítása</string>
     <string name="txt_settings_class">Osztály</string>
-    <string name="txt_settings_cleardb">Adatbázis törlése</string>
+    <string name="txt_settings_deletedb">Adatbázis törlés</string>
+    <string name="txt_settings_importdb">Adatbázis visszaállítás</string>
+    <string name="txt_settings_exportdb">Adatbázis mentés</string>
     <string name="txt_navigation_schedule">Órarend</string>
     <string name="txt_navigation_homework">Házi feladat</string>
     <string name="txt_navigation_grades">Ellenőrző</string>

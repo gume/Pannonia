@@ -4,6 +4,10 @@ package hu.edudroid.gume.pannoniaDB;
  * Created by gume7 on 9/9/2015.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +19,17 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.util.Log;
 
 public class PannoniaDBHelper extends SQLiteOpenHelper {
 
     private static PannoniaDBHelper _instance;
+    private Context context;
 
     private PannoniaDBHelper(Context context) {
         super(context, "database", null, 1);
+        this.context = context;
     }
 
     public static PannoniaDBHelper getInstance(Context context) {
@@ -165,8 +173,51 @@ public class PannoniaDBHelper extends SQLiteOpenHelper {
     public void delStudent(String omid) {
 
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("students", "omid =?", new String[] { omid });
+        db.delete("students", "omid =?", new String[]{omid});
         db.close();
+    }
+
+    protected void copyFile(String from, String to) {
+
+        try {
+            FileChannel ic = new FileInputStream(new File(from)).getChannel();
+            FileChannel oc = new FileOutputStream(new File(to)).getChannel();
+            oc.transferFrom(ic, 0, ic.size());
+            ic.close();
+            oc.close();
+        } catch (Exception e) {
+            Log.e("copyFile", "exception", e);
+        }
+    }
+
+    public void exportDB() {
+
+        File sd = Environment.getExternalStorageDirectory();
+
+        close();
+        if (sd.canWrite()) {
+            String from = context.getDatabasePath("database").getPath();
+            String to = sd.getPath() + "/Pannonia.db";
+            copyFile(from, to);
+        }
+    }
+
+    public void importDB(String path) {
+
+        File sd = Environment.getExternalStorageDirectory();
+
+        close();
+
+        //String from = sd.getPath() + "/Pannonia.db";
+        String to = context.getDatabasePath("database").getPath();
+        copyFile(path, to);
+
+        getWritableDatabase().close();
+    }
+
+    public void deleteDB() {
+        close();
+        context.deleteDatabase("database");
     }
 
 }
