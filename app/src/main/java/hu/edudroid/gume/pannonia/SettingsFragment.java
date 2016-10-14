@@ -2,13 +2,20 @@ package hu.edudroid.gume.pannonia;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.app.Fragment;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,17 +33,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.obsez.android.lib.filechooser.ChooserDialog;
-
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Manifest;
 
 import hu.edudroid.gume.pannoniaDB.PannoniaDBHelper;
 import hu.edudroid.gume.pannoniaweb.AsyncResponse;
 import hu.edudroid.gume.pannoniaweb.CheckOMIDTask;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -63,6 +73,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
 
     private String omidCache = null;
     private String passwordCache = null;
+
+    private static final int FILE_SELECT_CODE = 0;
 
     /**
      * Use this factory method to create a new instance of
@@ -270,18 +282,73 @@ public class SettingsFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void onClick_importDB(final View v) {
-        new ChooserDialog().with(getContext())
-                .withStartFile(Environment.getExternalStorageDirectory().getPath())
-                .withChosenListener(new ChooserDialog.Result() {
-                    @Override
-                    public void onChoosePath(String path, File pathFile) {
-                        pDB.importDB(path);
-                        Toast.makeText(getActivity(), "Database imported from " + path, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build()
-                .show();
 
+        if (ContextCompat.checkSelfPermission(getContext(),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android. Manifest.permission.READ_EXTERNAL_STORAGE },
+                    0);
+            return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Upload"),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(getContext(), "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    // Log.d(TAG, "File Uri: " + uri.toString());
+                    // Get the path
+                    try {
+                        String path = getPath(getContext(), uri);
+                        // Log.d(TAG, "File Path: " + path);
+                        pDB.importDB(path);
+                    } catch (Exception e) {
+
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public static String getPath(Context context, Uri uri) throws URISyntaxException {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = { "_data" };
+            Cursor cursor = null;
+
+            try {
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow("_data");
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+                // Eat it
+            }
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
     }
 
     public void onClick_deleteDB(final View v) {
